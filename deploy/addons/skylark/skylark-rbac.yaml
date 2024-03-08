@@ -1,0 +1,295 @@
+# Source: skylark/templates/clusterrole.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  creationTimestamp: null
+  name: skylark
+  labels:
+    helm.sh/chart: skylark-0.7.0
+    app.kubernetes.io/name: skylark
+    app.kubernetes.io/instance: skylark
+    app.kubernetes.io/version: "0.7.0"
+rules:
+  - apiGroups:
+      - admissionregistration.k8s.io
+    resources:
+      - mutatingwebhookconfigurations
+      - validatingwebhookconfigurations
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - apiextensions.k8s.io
+    resources:
+      - customresourcedefinitions
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+  - apiGroups:
+      - apps
+    resources:
+      - deployments
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - apps
+    resources:
+      - statefulsets
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - autoscaling
+    resources:
+      - horizontalpodautoscalers
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - batch
+    resources:
+      - cronjobs
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - batch
+    resources:
+      - jobs
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - ""
+    resources:
+      - events
+      - nodes
+      - resourcequotas
+      - pods
+      - services
+      - configmaps
+      - persistentvolumeclaims
+    verbs:
+      - create
+      - get
+      - list
+      - delete
+      - patch
+      - watch
+      - update
+  - apiGroups:
+      - ""
+    resources:
+      - secrets
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+  - apiGroups:
+      - ""
+    resources:
+      - serviceaccounts
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+  - apiGroups:
+      - ""
+    resources:
+      - services
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - networking.k8s.io
+    resources:
+      - ingresses
+      - ingress
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - openaios.4pd.io
+    resources:
+      - applications
+      - applicationsensors
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - openaios.4pd.io
+    resources:
+      - applications/finalizers
+    verbs:
+      - watch
+      - update
+  - apiGroups:
+      - openaios.4pd.io
+    resources:
+      - applications/status
+    verbs:
+      - get
+      - patch
+      - watch
+      - update
+  - apiGroups:
+      - rbac.authorization.k8s.io
+    resources:
+      - roles
+      - rolebindings
+      - clusterroles
+      - clusterrolebindings
+    verbs:
+      - get
+      - patch
+      - create
+      - delete
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - sparkoperator.k8s.io
+    resources:
+      - sparkapplications
+      - scheduledsparkapplications
+      - sparkapplications/status
+      - scheduledsparkapplications/status
+    verbs:
+      - get
+      - patch
+      - create
+      - delete
+      - list
+      - watch
+      - update
+  - apiGroups:
+      - extensions
+    resources:
+      - ingresses
+    verbs:
+      - get
+      - patch
+      - create
+      - delete
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - argoproj.io
+    resources:
+      - workflows
+      - cronworkflows
+    verbs:
+      - get
+      - patch
+      - create
+      - delete
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - getambassador.io
+    resources:
+      - mappings
+    verbs:
+      - get
+      - patch
+      - create
+      - delete
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - storage.k8s.io
+    resources:
+      - storageclasses
+    verbs:
+      - get
+      - patch
+      - create
+      - delete
+      - list
+      - patch
+      - update
+      - watch
+---
+# Source: skylark/templates/clusterrolebinding.yaml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  labels:
+    helm.sh/chart: skylark-0.7.0
+    app.kubernetes.io/name: skylark
+    app.kubernetes.io/instance: skylark
+    app.kubernetes.io/version: "0.7.0"
+  name: skylark
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: skylark
+subjects:
+  - kind: ServiceAccount
+    name: skylark
+    namespace: openaios
+---
+

@@ -1,0 +1,25 @@
+# Source: skylark/templates/configmap.yaml
+apiVersion: v1
+data:
+  global.values.yaml: |-
+    image:
+      repository: harbor.4pd.io
+  sys.config.yaml: |-
+    helmChartTpl:
+      webhookInitContainer:
+        chartRef:
+          name: webhook-init-container-tpl
+          version: 0.3.0
+      webhookSidecarGradio:
+        chartRef:
+          name: webhook-sidecar-gradio-tpl
+          version: 0.6.0
+kind: ConfigMap
+metadata:
+  labels:
+    helm.sh/chart: skylark-0.7.0
+    app.kubernetes.io/name: skylark
+    app.kubernetes.io/instance: skylark
+    app.kubernetes.io/version: "0.7.0"
+  name: skylark-configmap
+  namespace: openaios

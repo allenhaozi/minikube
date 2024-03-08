@@ -1,0 +1,11 @@
+# Source: skylark/templates/serviceaccount.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: skylark
+  namespace: openaios
+  labels:
+    helm.sh/chart: skylark-0.7.0
+    app.kubernetes.io/name: skylark
+    app.kubernetes.io/instance: skylark
+    app.kubernetes.io/version: "0.7.0"

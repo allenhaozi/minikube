@@ -1,0 +1,38 @@
+# Source: skylark/templates/mutating-webhook-configuration.yaml
+apiVersion: admissionregistration.k8s.io/v1
+kind: MutatingWebhookConfiguration
+metadata:
+  creationTimestamp: null
+  name: skylark-mutating-webhook-config
+  namespace: openaios
+webhooks:
+  # the following values will be updated by skylark init container
+  # 1. clientConfig.service.name
+  # 2. clientConfig.service.namespace
+  # 3. clientConfig.service.port
+  # 4. clientConfig.caBundle
+  - admissionReviewVersions:
+      - v1
+    clientConfig:
+      service:
+        name: skylark-webhooks
+        namespace: sage-gpt
+        port: 9443
+        path: /mutate--v1-pod
+      #caBundle: ""
+    failurePolicy: Fail
+    name: mpod.kb.io
+    rules:
+      - apiGroups:
+          - ""
+        apiVersions:
+          - v1
+        operations:
+          - CREATE
+          - UPDATE
+        resources:
+          - pods
+    sideEffects: None
+    objectSelector:
+      matchLabels:
+        skylark.4pd.io/webhook-inject-container: enabled

@@ -237,4 +237,9 @@ var Addons = []*Addon{
 		set:       SetBool,
 		callbacks: []setFn{EnableOrDisableAddon},
 	},
+	{
+		name: "skylark",
+		set: SetBool,
+		callbacks: []setFn{EnableOrDisableAddon},
+	},
 }

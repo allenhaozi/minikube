@@ -26,6 +26,7 @@ import (
 	semver "github.com/blang/semver/v4"
 	"github.com/pkg/errors"
 	"github.com/spf13/viper"
+
 	"k8s.io/minikube/deploy/addons"
 	"k8s.io/minikube/pkg/minikube/config"
 	"k8s.io/minikube/pkg/minikube/out"
@@ -102,6 +103,21 @@ func (a *Addon) EnableByDefault() {
 // Addons is the list of addons
 // TODO: Make dynamically loadable: move this data to a .yaml file within each addon directory
 var Addons = map[string]*Addon{
+	"skylark": NewAddon([]*BinAsset{
+		// We want to create the skylark ns first so that every subsequent object can be created
+		MustBinAsset(addons.SkylarkAssets, "skylark/skylark-ns.yaml", vmpath.GuestAddonsDir, "skylark-ns.yaml", "0640"),
+		MustBinAsset(addons.SkylarkAssets, "skylark/skylark-webhook-config.yaml", vmpath.GuestAddonsDir, "skylark-webhook-config.yaml", "0640"),
+		MustBinAsset(addons.SkylarkAssets, "skylark/skylark-configmap.yaml", vmpath.GuestAddonsDir, "skylark-configmap.yaml", "0640"),
+		MustBinAsset(addons.SkylarkAssets, "skylark/skylark-deploy.yaml.tmpl", vmpath.GuestAddonsDir, "skylark-deploy.yaml", "0640"),
+		MustBinAsset(addons.SkylarkAssets, "skylark/skylark-rbac.yaml", vmpath.GuestAddonsDir, "skylark-rbac.yaml", "0640"),
+		MustBinAsset(addons.SkylarkAssets, "skylark/skylark-sa.yaml", vmpath.GuestAddonsDir, "skylark-sa.yaml", "0640"),
+		MustBinAsset(addons.SkylarkAssets, "skylark/skylark-secret.yaml", vmpath.GuestAddonsDir, "skylark-secret.yaml", "0640"),
+		MustBinAsset(addons.SkylarkAssets, "skylark/skylark-svc.yaml", vmpath.GuestAddonsDir, "skylark-svc.yaml", "0640"),
+	}, true, "skylark", "3rd party (Skylark)", "", "https://gitlab.4pd.io/openaios/skylark", map[string]string{
+		"Skylark": "skylark:release-0.7.0-pipe-540-commit-a0ffdb2a@sha256:bdc21ed7ce060c6c624415ed368617f1edb0aab1671c2bb5089215505b9411c8",
+	},map[string]string{
+		"Skylark": "harbor.4pd.io",
+	}),
 	"auto-pause": NewAddon([]*BinAsset{
 		MustBinAsset(
 			addons.AutoPauseAssets,
@@ -784,7 +800,7 @@ var Addons = map[string]*Addon{
 		MustBinAsset(addons.NvidiaDevicePlugin, "nvidia-device-plugin/nvidia-device-plugin.yaml.tmpl", vmpath.GuestAddonsDir, "nvidia-device-plugin.yaml", "0640"),
 	}, false, "nvidia-device-plugin", "3rd party (NVIDIA)", "", "",
 		map[string]string{
-			"NvidiaDevicePlugin": "nvidia/k8s-device-plugin:v0.14.5@sha256:50aa9517d771e3b0ffa7fded8f1e988dba680a7ff5efce162ce31d1b5ec043e2",
+			"NvidiaDevicePlugin": "nvidia/k8s-device-plugin:v0.14.5",
 		}, map[string]string{
 			"NvidiaDevicePlugin": "nvcr.io",
 		}),
